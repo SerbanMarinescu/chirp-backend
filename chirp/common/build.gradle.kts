@@ -1,5 +1,6 @@
 plugins {
-    kotlin("jvm") version "2.2.21"
+    id("java-library")
+    id("chirp.kotlin-common")
 }
 
 group = "com.mscoding"

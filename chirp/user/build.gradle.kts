@@ -1,5 +1,6 @@
 plugins {
-    kotlin("jvm") version "2.2.21"
+    id("java-library")
+    id("chirp.spring-boot-service")
 }
 
 group = "com.mscoding"
@@ -10,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation(projects.common)
     testImplementation(kotlin("test"))
 }
 
