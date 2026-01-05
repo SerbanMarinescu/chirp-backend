@@ -1,4 +1,4 @@
-package com.mscoding.user.domain.model
+package com.mscoding.chirp.domain.model
 
 data class AuthenticatedUser(
     val user: User,

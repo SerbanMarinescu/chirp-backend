@@ -1,4 +1,4 @@
-package com.mscoding.user.domain.model
+package com.mscoding.chirp.domain.model
 
 import java.util.UUID
 

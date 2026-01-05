@@ -1,6 +1,6 @@
-package com.mscoding.user.infra.database.entities
+package com.mscoding.chirp.infra.database.entities
 
-import com.mscoding.user.domain.model.UserId
+import com.mscoding.chirp.domain.model.UserId
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
