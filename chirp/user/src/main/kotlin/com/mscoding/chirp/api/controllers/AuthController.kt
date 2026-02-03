@@ -1,7 +1,10 @@
 package com.mscoding.chirp.api.controllers
 
+import com.mscoding.chirp.api.dto.AuthenticatedUserDto
+import com.mscoding.chirp.api.dto.LoginRequest
 import com.mscoding.chirp.api.dto.RegisterRequest
 import com.mscoding.chirp.api.dto.UserDto
+import com.mscoding.chirp.api.mappers.toAuthenticatedUserDto
 import com.mscoding.chirp.api.mappers.toUserDto
 import com.mscoding.chirp.service.auth.AuthService
 import jakarta.validation.Valid
@@ -25,5 +28,15 @@ class AuthController(
             username = body.username,
             password = body.password
         ).toUserDto()
+    }
+
+    @PostMapping("/login")
+    fun login(
+       @RequestBody body: LoginRequest
+    ): AuthenticatedUserDto {
+        return authService.login(
+            email = body.email,
+            password = body.password
+        ).toAuthenticatedUserDto()
     }
 }
