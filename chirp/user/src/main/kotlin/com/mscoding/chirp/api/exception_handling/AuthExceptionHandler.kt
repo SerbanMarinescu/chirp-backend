@@ -1,5 +1,6 @@
 package com.mscoding.chirp.api.exception_handling
 
+import com.mscoding.chirp.domain.exception.InvalidTokenException
 import com.mscoding.chirp.domain.exception.UserAlreadyExistsException
 import com.mscoding.chirp.infra.security.exception.EncodePasswordException
 import org.springframework.http.HttpStatus
@@ -18,6 +19,15 @@ class AuthExceptionHandler {
         e: UserAlreadyExistsException
     ) = mapOf(
         "code" to "USER_EXISTS",
+        "message" to e.message
+    )
+
+    @ExceptionHandler(InvalidTokenException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onInvalidToken(
+        e: InvalidTokenException
+    ) = mapOf(
+        "code" to "INVALID_TOKEN",
         "message" to e.message
     )
 
