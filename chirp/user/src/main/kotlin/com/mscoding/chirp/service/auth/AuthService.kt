@@ -1,5 +1,6 @@
 package com.mscoding.chirp.service.auth
 
+import com.mscoding.chirp.domain.exception.EmailNotVerifiedException
 import com.mscoding.chirp.domain.exception.InvalidCredentialsException
 import com.mscoding.chirp.domain.exception.InvalidTokenException
 import com.mscoding.chirp.infra.security.exception.EncodePasswordException
@@ -26,9 +27,11 @@ class AuthService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
-    private val refreshTokenRepository: RefreshTokenRepository
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val emailVerificationService: EmailVerificationService
 ) {
 
+    @Transactional
     fun register(email: String, username: String, password: String): User {
         val user = userRepository.findByEmailOrUsername(
             email = email.trim(),
@@ -39,13 +42,15 @@ class AuthService(
             throw UserAlreadyExistsException()
         }
 
-        val savedUser = userRepository.save(
+        val savedUser = userRepository.saveAndFlush(
             UserEntity(
                 email = email.trim(),
                 username = username.trim(),
                 hashedPassword = passwordEncoder.encode(password) ?: throw EncodePasswordException()
             )
         ).toUser()
+
+        emailVerificationService.createVerificationToken(email.trim())
 
         return savedUser
     }
@@ -60,7 +65,9 @@ class AuthService(
             throw InvalidCredentialsException()
         }
 
-        // TODO: Check for verified email
+        if(!user.hasVerifiedEmail) {
+            throw EmailNotVerifiedException()
+        }
 
         return user.id?.let { userId ->
             val accessToken = jwtService.generateAccessToken(userId)
