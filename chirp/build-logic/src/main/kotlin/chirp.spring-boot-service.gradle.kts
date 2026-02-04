@@ -3,6 +3,7 @@ import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 plugins {
     id("chirp.kotlin-common")
     kotlin("plugin.jpa")
+    kotlin("plugin.spring")
     id("io.spring.dependency-management")
 }
 

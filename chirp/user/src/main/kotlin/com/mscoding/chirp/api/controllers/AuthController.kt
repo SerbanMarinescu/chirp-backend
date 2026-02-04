@@ -2,6 +2,7 @@ package com.mscoding.chirp.api.controllers
 
 import com.mscoding.chirp.api.dto.AuthenticatedUserDto
 import com.mscoding.chirp.api.dto.LoginRequest
+import com.mscoding.chirp.api.dto.RefreshRequest
 import com.mscoding.chirp.api.dto.RegisterRequest
 import com.mscoding.chirp.api.dto.UserDto
 import com.mscoding.chirp.api.mappers.toAuthenticatedUserDto
@@ -37,6 +38,15 @@ class AuthController(
         return authService.login(
             email = body.email,
             password = body.password
+        ).toAuthenticatedUserDto()
+    }
+
+    @PostMapping("/refresh")
+    fun refresh(
+       @RequestBody body: RefreshRequest
+    ): AuthenticatedUserDto {
+        return authService.refresh(
+            refreshToken = body.refreshToken
         ).toAuthenticatedUserDto()
     }
 }
