@@ -30,7 +30,7 @@ class EmailVerificationTokenEntity(
     var expiresAt: Instant,
 
     @Column
-    var usedAt: Instant?,
+    var usedAt: Instant? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -38,4 +38,10 @@ class EmailVerificationTokenEntity(
 
     @CreationTimestamp
     var createdAt: Instant = Instant.now()
-)
+) {
+    val isUsed: Boolean
+        get() = usedAt != null
+
+    val isExpired: Boolean
+        get() = Instant.now() > expiresAt
+}
